@@ -1,6 +1,20 @@
+/*
+ I went generic right out the gate. The last tree had a generic implementation in the final review. Here
+ we will head that way throughout the whole lesson. The tree involves the basic functions: add, remove, find.
+ Rough Template of Exercises:
+   1. Introduction / Build class shells (BinarySearchTree & BinaryNode)
+   2. Private add function
+   3. Public add function
+   4. Private find function
+   5. Helper findMinimumValue function
+   6. Private & public remove function
+   7. InOrder Transversal
+   8. Printing the tree
+   9. Review
+ */
+
 class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringConvertible {
 
-    
     
     /* Instance Variables */
     private var root: BinaryNode<T>?

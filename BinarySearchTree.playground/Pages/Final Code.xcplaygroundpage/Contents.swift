@@ -14,7 +14,6 @@
  */
 
 class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringConvertible {
-
     
     /* Instance Variables */
     private var root: BinaryNode<T>?
@@ -24,7 +23,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     // add(_:) -> Users add values to BST, if there is no root, it gets added here
     func add(_ value: T) {
         let node = BinaryNode(data: value)
-        if let root = self.root {
+        if let root = root {
             add(node, to: root)
         } else {
             self.root = node
@@ -33,12 +32,12 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     
     // contains(_:) -> Returns a boolean whether the BST contains an element
     func contains(_ value: T) -> Bool {
-        self.find(value, fromParent: self.root)
+        self.find(value, startingAt: root)
     }
     
     // remove(_:) -> Removes an element from the tree and returns it
     func remove(_ value: T) -> BinaryNode<T>? {
-        remove(value, fromParent: self.root)
+        remove(value, fromParent: root)
     }
     
     /* Private Functions */
@@ -67,17 +66,17 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
      *  Recurses (preorder) down the tree to find a value
      *  and returns if the value was found or not.
      */
-    private func find(_ value: T, fromParent node: BinaryNode<T>?) -> Bool {
-        
-        var valueFound = false
-        
+    private func find(_ value: T, startingAt node: BinaryNode<T>?) -> Bool {
         guard let parent = node else {
             return false
         }
+
+        var valueFound = false
+        
         if value < parent.data {
-            valueFound = self.find(value, fromParent: parent.leftChild)
+            valueFound = self.find(value, startingAt: parent.leftChild)
         } else if value > parent.data {
-            valueFound = self.find(value, fromParent: parent.rightChild)
+            valueFound = self.find(value, startingAt: parent.rightChild)
         } else {
             valueFound = true
         }
@@ -92,35 +91,33 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
      *  either the biggest child on the left or the smallest child on the right.
      */
     private func remove(_ value: T, fromParent node: BinaryNode<T>?) -> BinaryNode<T>? {
-        
         guard let parent = node else {
             return nil
         }
         
-        if value < parent.data {
+        switch value {
+        case _ where value < parent.data:
             parent.leftChild = remove(value, fromParent: parent.leftChild)
-        } else if value > parent.data {
+        case _ where value > parent.data:
             parent.rightChild = remove(value, fromParent: parent.rightChild)
-        }
-        else {
+        case _ where value == parent.data:
             if parent.leftChild == nil {
                 return parent.rightChild
             } else if parent.rightChild == nil{
                 return parent.leftChild
+            } else {
+                parent.data = findMinimumValue(parent.rightChild)!
+                parent.rightChild = remove(parent.data, fromParent: parent.rightChild)
             }
-            
-            parent.data = findMinimumValue(parent.rightChild)!
-            parent.rightChild = remove(parent.data, fromParent: parent.rightChild)
+        default: fatalError("Unexpected value")
         }
-        
-        return parent;
+        return parent
     }
     
     /* findMinimumValue(_:)
      *  A helper function used to find the minimum value on the right side of the tree
      */
     private func findMinimumValue(_ node: BinaryNode<T>?) -> T? {
-        
         guard var currentNode = node else {
             return nil
         }
@@ -137,10 +134,10 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
      *  and to use inout variables.
      */
     private func inOrderTraversal(_ node: BinaryNode<T>?, _ result: inout String) {
-        guard let _ = node else { return }
-        self.inOrderTraversal(node?.leftChild, &result)
-        result += "\((node?.data.description)!) "
-        self.inOrderTraversal(node?.rightChild, &result)
+        guard let node = node else { return }
+        self.inOrderTraversal(node.leftChild, &result)
+        result += "\(node.data.description) "
+        self.inOrderTraversal(node.rightChild, &result)
     }
 
     
@@ -149,7 +146,6 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
         var text = ""
         inOrderTraversal(self.root, &text)
         return text
-        
     }
     
 }
@@ -161,10 +157,9 @@ class BinaryNode<T> {
     
     init(data: T) {
         self.data = data
-        self.leftChild = nil
-        self.rightChild = nil
     }
 }
+
 
 var testTree = BinarySearchTree<Int>()
 testTree.add(5)

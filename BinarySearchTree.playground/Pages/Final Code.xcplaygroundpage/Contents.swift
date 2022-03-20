@@ -32,7 +32,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     
     // contains(_:) -> Returns a boolean whether the BST contains an element
     func contains(_ value: T) -> Bool {
-        self.find(value, startingAt: root)
+        self.contains(value, startingAt: root)
     }
     
     // remove(_:) -> Removes an element from the tree and returns it
@@ -62,11 +62,11 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
         }
     }
     
-    /* find(_:fromParent:)
+    /* contains(_:fromParent:)
      *  Recurses (preorder) down the tree to find a value
      *  and returns if the value was found or not.
      */
-    private func find(_ value: T, startingAt node: BinaryNode<T>?) -> Bool {
+    private func contains(_ value: T, startingAt node: BinaryNode<T>?) -> Bool {
         guard let parent = node else {
             return false
         }
@@ -74,9 +74,9 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
         var valueFound = false
         
         if value < parent.data {
-            valueFound = self.find(value, startingAt: parent.leftChild)
+            valueFound = self.contains(value, startingAt: parent.leftChild)
         } else if value > parent.data {
-            valueFound = self.find(value, startingAt: parent.rightChild)
+            valueFound = self.contains(value, startingAt: parent.rightChild)
         } else {
             valueFound = true
         }

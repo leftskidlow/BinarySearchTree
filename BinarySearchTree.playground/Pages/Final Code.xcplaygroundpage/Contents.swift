@@ -23,7 +23,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     // add(_:) -> Users add values to BST, if there is no root, it gets added here
     func add(_ value: T) {
         let node = BinaryNode(data: value)
-        if let root = root {
+        if let root = self.root {
             add(node, to: root)
         } else {
             self.root = node

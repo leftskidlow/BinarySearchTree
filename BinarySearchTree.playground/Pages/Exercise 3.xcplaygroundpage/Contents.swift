@@ -58,7 +58,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible> {
     // add(_:) -> Users add values to BST, if there is no root, it gets added here
     func add(_ value: T) {
         let node = BinaryNode(data: value)
-        if let root = root {
+        if let root = self.root {
             add(node, to: root)
         } else {
             self.root = node
@@ -100,4 +100,10 @@ class BinaryNode<T> {
         self.data = data
     }
 }
+ 
+var testTree = BinarySearchTree<Int>()
+testTree.add(5)
+testTree.add(6)
+testTree.add(2)
+ 
  */

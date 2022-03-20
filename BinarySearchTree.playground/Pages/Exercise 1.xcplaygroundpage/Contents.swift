@@ -23,4 +23,7 @@ class BinaryNode<T> {
         self.data = data
     }
 }
+
+var numberTree = BinarySearchTree<Int>()
 */
+

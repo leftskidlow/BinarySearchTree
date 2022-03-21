@@ -102,7 +102,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
             } else if parent.rightChild == nil{
                 return parent.leftChild
             } else {
-                parent.data = findMinimumValue(parent.rightChild)!
+                parent.data = findMinimumValue(parent.rightChild!)
                 parent.rightChild = remove(parent.data, fromParent: parent.rightChild)
             }
         default: fatalError("Unexpected value")
@@ -112,10 +112,8 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     
     /* findMinimumValue(_:)
      *  A helper function used to find the minimum value on the right side of the tree */
-    private func findMinimumValue(_ node: BinaryNode<T>?) -> T? {
-        guard var currentNode = node else {
-            return nil
-        }
+    private func findMinimumValue(_ node: BinaryNode<T>) -> T {
+        var currentNode = node
         
         while let next = currentNode.leftChild {
             currentNode = next
@@ -172,7 +170,7 @@ testTree.remove(3)
 print(testTree)
 testTree.remove(7)
 print(testTree)
-testTree.remove(54)
+testTree.remove(6)
 print(testTree)
 
 

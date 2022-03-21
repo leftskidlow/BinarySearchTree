@@ -32,7 +32,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     
     // contains(_:) -> Returns a boolean whether the BST contains an element
     func contains(_ value: T) -> Bool {
-        self.contains(value, startingAt: root)
+        contains(value, startingAt: root)
     }
     
     // remove(_:) -> Removes an element from the tree and returns it
@@ -44,8 +44,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     
     /* add(_:to:)
      *  Recurses (preorder) down the tree to find where to put the new value
-     *  and is does not allow duplicate values
-     */
+     *  and is does not allow duplicate values */
     private func add(_ node: BinaryNode<T>, to parent: BinaryNode<T>) {
         if node.data < parent.data {
             if let existingLeftNode = parent.leftChild {
@@ -62,10 +61,9 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
         }
     }
     
-    /* contains(_:fromParent:)
+    /* contains(_:startingAt:)
      *  Recurses (preorder) down the tree to find a value
-     *  and returns if the value was found or not.
-     */
+     *  and returns if the value was found or not. */
     private func contains(_ value: T, startingAt node: BinaryNode<T>?) -> Bool {
         guard let parent = node else {
             return false
@@ -74,22 +72,20 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
         var valueFound = false
         
         if value < parent.data {
-            valueFound = self.contains(value, startingAt: parent.leftChild)
+            valueFound = contains(value, startingAt: parent.leftChild)
         } else if value > parent.data {
-            valueFound = self.contains(value, startingAt: parent.rightChild)
+            valueFound = contains(value, startingAt: parent.rightChild)
         } else {
             valueFound = true
         }
         return valueFound
-        
     }
     
     /* remove(_:fromParent:)
      *  Recurses (preorder) down the tree to find a value and delete it
      *  from the tree, it deletes in place, so recreates the tree new tree
      *  as it goes. Essentially, the node to be removed will be replaced with
-     *  either the biggest child on the left or the smallest child on the right.
-     */
+     *  either the biggest child on the left or the smallest child on the right. */
     private func remove(_ value: T, fromParent node: BinaryNode<T>?) -> BinaryNode<T>? {
         guard let parent = node else {
             return nil
@@ -115,8 +111,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     }
     
     /* findMinimumValue(_:)
-     *  A helper function used to find the minimum value on the right side of the tree
-     */
+     *  A helper function used to find the minimum value on the right side of the tree */
     private func findMinimumValue(_ node: BinaryNode<T>?) -> T? {
         guard var currentNode = node else {
             return nil
@@ -131,8 +126,7 @@ class BinarySearchTree<T: Comparable & CustomStringConvertible>: CustomStringCon
     /* inOrderTraversal(_:_:)
      *  Recurses (inorder) to provide the structure for the print function.
      *  Really just wanted to use a different traversal than preorder for the print
-     *  and to use inout variables.
-     */
+     *  and to use inout variables. */
     private func inOrderTraversal(_ node: BinaryNode<T>?, _ result: inout String) {
         guard let node = node else { return }
         self.inOrderTraversal(node.leftChild, &result)
@@ -204,4 +198,3 @@ anotherTestTree.remove("pink")
 print(anotherTestTree)
 anotherTestTree.remove("baboon")
 print(anotherTestTree)
-
